@@ -2,7 +2,7 @@ package ultrathlete.com.training.service.model;
 
 import ultrathlete.com.training.model.RunningData;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "model3", schema = "ultratraining")

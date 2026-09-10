@@ -3,15 +3,11 @@ package ultrathlete.com.gps;
 import io.jenetics.jpx.*;
 import io.jenetics.jpx.geom.Geoid;
 import org.junit.Test;
-import ultrathlete.com.data.stats.Utils.MultiplePoint;
-import ultrathlete.com.data.stats.linearRegression.MultipleLinearRegression;
 import ultrathlete.com.data.stats.regression.Grade;
 import ultrathlete.com.training.bo.RanSegment;
 import ultrathlete.com.training.bo.Segment;
 import ultrathlete.com.training.bo.impl.RanSession;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
 

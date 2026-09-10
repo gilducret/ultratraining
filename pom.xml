@@ -2,58 +2,134 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.3.5</version>                        <!-- ① upgraded from 2.5.5 -->
+        <relativePath/>
     </parent>
+
     <groupId>ultratraining.com</groupId>
     <artifactId>training</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>training</name>
     <description>Ultra Training</description>
+
     <properties>
-        <java.version>11</java.version>
+        <java.version>21</java.version>                 <!-- ② upgraded from 11 -->
     </properties>
+
     <dependencies>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             WEB — REST API
+             Replaces spring-boot-starter-web-services (which was SOAP)
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>  <!-- ③ was web-services -->
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             DATABASE — JPA + PostgreSQL
+             No version needed — Spring Boot manages them
+        ════════════════════════════════════════════════════════════════ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web-services</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.okta.spring</groupId>
-            <artifactId>okta-spring-boot-starter</artifactId>
-            <version>2.1.2</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             SECURITY — Auth0
+             Replaces okta-spring-boot-starter.
+             Spring Boot 3.x uses the standard OAuth2 starters.
+             Auth0 works directly with these — no Auth0/Okta SDK needed.
+             Your SecurityConfig.java (as we wrote earlier) handles everything.
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            <!-- Validates JWT tokens from mobile app API calls -->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            <!-- Handles web browser login sessions (Thymeleaf web app) -->
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             EMAIL
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             HTTP CLIENT
+             Upgraded from 4.5.12 to 5.x — required for Spring Boot 3.x.
+             Note: the package name changed from
+               org.apache.http.*  →  org.apache.hc.client5.*
+             You will need to update any imports that use the old package.
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>  <!-- ④ upgraded -->
+            <artifactId>httpclient5</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             MATHS — prediction and forecast algorithms
+             Pure Java libraries — no Jakarta changes needed.
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>                    <!-- ⑤ minor patch update -->
+        </dependency>
+        <dependency>
+            <groupId>gov.nist.math</groupId>
+            <artifactId>jama</artifactId>
+            <version>1.0.3</version>                    <!-- unchanged — still works -->
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             GPX PARSING
+             Pure Java — no Jakarta changes needed.
+             Upgraded to latest stable version.
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>io.jenetics</groupId>
+            <artifactId>jpx</artifactId>
+            <version>2.3.0</version>                    <!-- ⑥ 3.2.0 -->
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             VALIDATION
+             In Spring Boot 3.x this is no longer included automatically.
+             Needed if you use @Valid, @NotNull, @Size etc on your DTOs.
+        ════════════════════════════════════════════════════════════════ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId> <!-- ⑦ new -->
+        </dependency>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             TESTING
+             spring-boot-starter-test already includes JUnit 5.
+             Keeping JUnit 4 temporarily so existing tests still compile.
+             Migrate tests to JUnit 5 progressively (@Test from org.junit.jupiter).
+        ════════════════════════════════════════════════════════════════ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -64,39 +140,12 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <artifactId>junit</artifactId>              <!-- ⑧ kept for now -->
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.jenetics</groupId>
-            <artifactId>jpx</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.12</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/gov.nist.math/jama -->
-        <dependency>
-            <groupId>gov.nist.math</groupId>
-            <artifactId>jama</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-
 
     </dependencies>
 

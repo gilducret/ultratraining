@@ -5,7 +5,7 @@ import ultrathlete.com.training.service.model.Model2;
 import ultrathlete.com.training.service.model.Model3;
 import ultrathlete.com.training.service.model.Model4;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user", schema = "ultratraining")

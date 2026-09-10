@@ -1,9 +1,8 @@
 package ultrathlete.com.training.bo.impl;
 
 import ultrathlete.com.training.bo.SessionFile;
-import ultrathlete.com.training.bo.User;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "file", schema = "ultratraining")

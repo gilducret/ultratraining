@@ -2,7 +2,7 @@ package ultrathlete.com.training.bo;
 
 import ultrathlete.com.training.bo.impl.UserImpl;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity

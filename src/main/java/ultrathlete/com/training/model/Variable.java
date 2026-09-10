@@ -1,6 +1,6 @@
 package ultrathlete.com.training.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "modelvariables", schema = "ultratraining")

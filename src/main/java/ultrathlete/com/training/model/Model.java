@@ -1,6 +1,5 @@
 package ultrathlete.com.training.model;
 
-import javax.persistence.*;
 import java.util.Set;
 
 public class Model {
