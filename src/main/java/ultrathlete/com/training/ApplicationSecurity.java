@@ -1,13 +1,24 @@
 package ultrathlete.com.training;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/**");
+@EnableWebSecurity
+public class ApplicationSecurity {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        // Allow all requests to the API without authentication
+                        // The webapp handles Auth0 login — the API trusts internal calls
+                        .anyRequest().permitAll()
+                );
+        return http.build();
     }
 }

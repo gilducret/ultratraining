@@ -1,27 +1,8 @@
 package ultrathlete.com.training.service.impl;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
-import org.apache.http.ssl.TrustStrategy;
-import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import ultrathlete.com.training.bo.impl.LocationImpl;
 import ultrathlete.com.training.bo.impl.Locations;
 import ultrathlete.com.training.bo.impl.ResultLocations;
 import ultrathlete.com.training.service.LocationService;
@@ -33,11 +14,15 @@ import java.util.List;
 @Service
 public class LocationServiceImpl implements LocationService {
 
+
+
     private static final Logger LOGGER = LogManager.getLogger(LocationServiceImpl.class);
 
     @Override
     public ResultLocations getElevation(Locations locations) {
+        return null;
 
+        /*
         String url = "https://api.open-elevation.com/api/v1/lookup";
 
         try {
@@ -84,7 +69,7 @@ public class LocationServiceImpl implements LocationService {
             e.printStackTrace();
         }
 
-        return null;
+        return null; */
     }
 
     /**
@@ -95,7 +80,10 @@ public class LocationServiceImpl implements LocationService {
      * @param withSelfSigned true if a self signed certificate can be accepted
      * @return
      */
+    /*
     private CloseableHttpClient getHttpClient(boolean withSelfSigned) {
+        return null;
+
         if (withSelfSigned) {   // Accept self-signed certificates
             TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
             SSLContext sslContext = null;
@@ -121,17 +109,18 @@ public class LocationServiceImpl implements LocationService {
         } else {    // Signed certificates
             return HttpClients.createDefault();
         }
-    }
+        */
 
     /**
      * Closes an HttpClient once used
      * @param httpClient
      */
+    /*
     private void closeConnection(CloseableHttpClient httpClient) {
         try {
             httpClient.close();
         } catch (IOException e) {
             LOGGER.debug("HttpClient close error: " + e.getMessage());
         }
-    }
+    }*/
 }

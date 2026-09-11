@@ -9,6 +9,7 @@ public interface User {
     String getFirstName();
     String getLastName();
     String getEmail();
+    String getAuth0Id();
     Model2 getModel2();
     Model3 getModel3();
     Model4 getModel4();

@@ -2,6 +2,7 @@ package ultrathlete.com.training.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ultrathlete.com.training.bo.User;
@@ -24,11 +25,6 @@ public class UserController {
         return user;
     }
 
-    @GetMapping(value = "/email/{email}")
-    public User findByEmail(@PathVariable String email) {
-        return userService.getUser(email);
-    }
-
     @GetMapping(value = "/users")
     public Iterable<UserImpl> findAllUsers() {
         return userService.getAll();
@@ -45,7 +41,25 @@ public class UserController {
         if (user != null) {
             return userService.createUser(user);
         } else {
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is null", null);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is null", null);
         }
+    }
+
+    @GetMapping(value = "/email/{email}")
+    public ResponseEntity<User> findByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping(value = "/auth0/{auth0Id}")
+    public ResponseEntity<User> findByAuth0Id(@PathVariable String auth0Id) {
+        User user = userService.getUser(auth0Id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 }

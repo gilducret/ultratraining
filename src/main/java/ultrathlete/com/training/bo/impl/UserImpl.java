@@ -17,6 +17,17 @@ public class UserImpl implements User {
     private String lastName;
     private String email;
 
+    @Column(unique = true)
+    private String auth0Id;
+
+    public String getAuth0Id() {
+        return auth0Id;
+    }
+
+    public void setAuth0Id(String auth0Id) {
+        this.auth0Id = auth0Id;
+    }
+
     @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="model2Id")
     private Model2  model2;

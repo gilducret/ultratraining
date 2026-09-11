@@ -3,8 +3,6 @@ package ultrathlete.com.training.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ultrathlete.com.training.bo.User;
@@ -13,8 +11,11 @@ import ultrathlete.com.training.model.Forecast;
 import ultrathlete.com.training.model.SegmentForecast;
 import ultrathlete.com.training.service.UserService;
 import ultrathlete.com.training.service.impl.ForecastManager;
+import ultrathlete.com.training.service.model.Models;
 import ultrathlete.com.training.service.model.PredictionModel;
 import ultrathlete.com.training.util.TimeUtil;
+import ultrathlete.com.training.bo.impl.SessionFileImpl;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -129,5 +130,53 @@ public class ForecastControler {
         segment.setMax(TimeUtil.MakeReadable((long) max));
 
         return segment;
+    }
+
+    /**
+     * POST /api/forecast/reference
+     * Upload one or more reference GPX files (training runs).
+     * Rebuilds the user's pace model after each upload.
+     *
+     * @param files   one or more GPX files
+     * @param userId  the user's database ID
+     */
+    @PostMapping(path = "/reference")
+    public ResponseEntity<String> addReference(
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("userId") int userId) throws IOException {
+
+        UserImpl user = (UserImpl) userService.getUser(userId);
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        // Convert MultipartFile[] to SessionFileImpl[]
+        SessionFileImpl[] sessionFiles = new SessionFileImpl[files.length];
+        for (int i = 0; i < files.length; i++) {
+            MultipartFile file = files[i];
+            SessionFileImpl sessionFile = new SessionFileImpl();
+            sessionFile.setName(file.getOriginalFilename());
+            sessionFile.setType(file.getContentType());
+            sessionFile.setSize(file.getSize());
+            sessionFile.setData(file.getBytes());
+            sessionFiles[i] = sessionFile;
+        }
+
+        // Add reference data and rebuild pace model
+        Models models = forecastManager.addReferenceData(sessionFiles, user);
+
+        if (models == null) {
+            return new ResponseEntity<>(
+                    "Files saved but model could not be built yet. Upload more reference runs.",
+                    HttpStatus.OK);
+        }
+
+        // Report which models were successfully built
+        StringBuilder result = new StringBuilder("Model updated. ");
+        if (models.getModel2() != null) result.append("Model2 ✓ ");
+        if (models.getModel3() != null) result.append("Model3 ✓ ");
+        if (models.getModel4() != null) result.append("Model4 ✓ ");
+
+        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 }

@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String email) {
-        return userDAO.findByEmail(email);
+    public User getUser(String auth0Id) {
+        return userDAO.findByAuth0Id(auth0Id);
     }
 
     @Override
@@ -41,5 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection<UserImpl> getAll(String name) {
         return userDAO.findAllUsers(name);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userDAO.findByEmail(email);
     }
 }

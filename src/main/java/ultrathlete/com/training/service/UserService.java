@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface UserService {
     User getUser(int id);
-    User getUser(String email);
+    User getUser(String auth0Id);
     int createUser(UserImpl user);
     Iterable<UserImpl> getAll();
     Collection<UserImpl> getAll(String name);
+    User getUserByEmail(String email);
 }

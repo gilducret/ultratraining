@@ -10,8 +10,9 @@ import java.util.Collection;
 @Repository
 public interface UserDAO extends  CrudRepository<UserImpl, Integer> {
 
-    UserImpl findByEmail(String email);
+    UserImpl findByAuth0Id(String auth0Id);
 
     @Query("SELECT u FROM UserImpl u WHERE (u.firstName like :name% or u.lastName like :name%) order by u.lastName, u.firstName")
     Collection<UserImpl> findAllUsers(String name);
+    UserImpl findByEmail(String email);
 }
