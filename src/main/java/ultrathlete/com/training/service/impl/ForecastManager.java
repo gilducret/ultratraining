@@ -70,7 +70,8 @@ public class ForecastManager {
             RanSegmentBuilder ranSegmentBuilder = new RanSegmentBuilder();
             //List<RanSegment> ranSegments = ranSegmentBuilder.getRanSegments(segments, 5, false);
             //allRanSegments.addAll(ranSegments);
-            allRanSegments = ranSegmentBuilder.getRanSegments(segments, 5, false);
+            // -- OLD Bug? allRanSegments = ranSegmentBuilder.getRanSegments(segments, 5, false);
+            allRanSegments.addAll(ranSegmentBuilder.getRanSegments(segments, 5, false));
         }
         return calculateRegression(allRanSegments);
     }

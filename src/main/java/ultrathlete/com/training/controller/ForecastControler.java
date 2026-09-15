@@ -18,7 +18,10 @@ import ultrathlete.com.training.bo.impl.SessionFileImpl;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Comparator;
 
 @RestController
 @RequestMapping(value = "/api/forecast")
@@ -178,5 +181,63 @@ public class ForecastControler {
         if (models.getModel4() != null) result.append("Model4 ✓ ");
 
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/predict")
+    public ResponseEntity<List<SegmentForecast>> predict(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("userId") int userId) throws IOException {
+
+        UserImpl user = (UserImpl) userService.getUser(userId);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getModel2() == null && user.getModel3() == null) {
+            return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+        }
+
+        List<PredictionModel> predictions =
+                forecastManager.predictRun(file.getInputStream(), user);
+
+        if (predictions == null || predictions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        // Return ALL segments — webapp handles filtering
+        List<SegmentForecast> result = predictions.stream()
+                .map(p -> buildSegmentForecast(
+                        String.format("%.2f km", p.getRanSegment().getTotalDistance() / 1000),
+                        p))
+                .collect(java.util.stream.Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /**
+     * Convert one PredictionModel into a SegmentForecast
+     * ready to be returned as JSON.
+     */
+    private SegmentForecast buildSegmentForecast(
+            String name, PredictionModel prediction) {
+
+        SegmentForecast seg = new SegmentForecast();
+        seg.setName(name);
+        seg.setDistance(String.format("%.2f",
+                prediction.getRanSegment().getTotalDistance() / 1000));
+        seg.setElevationGain(prediction.getRanSegment().getElevationGain());
+        seg.setElevationLoss(prediction.getRanSegment().getElevationLoss());
+
+        double m2 = prediction.getModel2();
+        double m3 = prediction.getModel3();
+        double m4 = prediction.getModel4();
+
+        seg.setDuration2(m2);
+        seg.setDuration3(m3);
+        seg.setDuration4(m4);
+        seg.setMin(TimeUtil.MakeReadable((long) Math.min(m2, m3)));
+        seg.setMax(TimeUtil.MakeReadable((long) Math.max(m2, m3)));
+
+        return seg;
     }
 }

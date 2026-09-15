@@ -8,13 +8,13 @@ spring:
   jpa:
     properties:
       hibernate:
+        ddl-auto: none
         default_schema: ultratraining
         globally_quoted_identifiers: true
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: update
     show-sql: false
 
 server:

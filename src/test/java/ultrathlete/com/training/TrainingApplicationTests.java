@@ -3,6 +3,7 @@ package ultrathlete.com.training;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ultrathlete.com.training.bo.PredictedSession;
 import ultrathlete.com.training.bo.impl.*;
 import ultrathlete.com.training.service.model.Models;
@@ -20,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class TrainingApplicationTests {
     @Autowired
     private LocationService locationService;
@@ -236,73 +238,70 @@ class TrainingApplicationTests {
     @Test
     public void TestAddReferenceData() {
         final String[] gpxs = {
-        /*        "C:\\Users\\gille\\Downloads\\pj1.gpx",
-                "C:\\Users\\gille\\Downloads\\pj2.gpx",
-                "C:\\Users\\gille\\Downloads\\pj3.gpx",
-                "C:\\Users\\gille\\Downloads\\pj4.gpx",
-                "C:\\Users\\gille\\Downloads\\pj5.gpx",
-                "C:\\Users\\gille\\Downloads\\pj6.gpx",
-                "C:\\Users\\gille\\Downloads\\plainejouxcap.gpx",
-                "C:\\Users\\gille\\Downloads\\m1.gpx",
-                "C:\\Users\\gille\\Downloads\\m2.gpx",
-                "C:\\Users\\gille\\Downloads\\m3.gpx",
-                "C:\\Users\\gille\\Downloads\\m4.gpx",
-                "C:\\Users\\gille\\Downloads\\m5.gpx",
-                "C:\\Users\\gille\\Downloads\\m6.gpx",
-                "C:\\Users\\gille\\Downloads\\m7.gpx",
-                "C:\\Users\\gille\\Downloads\\cretes.gpx",
-                "C:\\Users\\gille\\Downloads\\20220611_Mont_Cretes.gpx",
-                "C:\\Users\\gille\\Downloads\\20220618-Montagne-Cova-Cretes.gpx",
-                "C:\\Users\\gille\\Downloads\\20210821_belier_montagne_7342591908.gpx",
-                "C:\\Users\\gille\\Downloads\\challenge-lac-montagne-s.gpx",
-                "C:\\Users\\gille\\Downloads\\montagne-leforchat-lescretes-20220724.gpx",
-                "C:\\Users\\gille\\Downloads\\20220827_Montagne_ColdeCou_9489574596.gpx",
+               "C:\\Users\\gille\\Downloads\\pj1.gpx",
+                       "C:\\Users\\gille\\Downloads\\pj2.gpx",
+                       "C:\\Users\\gille\\Downloads\\pj3.gpx",
+                       "C:\\Users\\gille\\Downloads\\pj4.gpx",
+                       "C:\\Users\\gille\\Downloads\\pj5.gpx",
+                       "C:\\Users\\gille\\Downloads\\pj6.gpx",
+                                   "C:\\Users\\gille\\Downloads\\plainejouxcap.gpx",
+                                 "C:\\Users\\gille\\Downloads\\m1.gpx",
+                                  "C:\\Users\\gille\\Downloads\\m2.gpx",
+                                  "C:\\Users\\gille\\Downloads\\m3.gpx",
+                                  "C:\\Users\\gille\\Downloads\\m4.gpx",
+                                  "C:\\Users\\gille\\Downloads\\m5.gpx",
+                                  "C:\\Users\\gille\\Downloads\\m6.gpx",
+                                  "C:\\Users\\gille\\Downloads\\m7.gpx"
+               /*                   "C:\\Users\\gille\\Downloads\\cretes.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220611_Mont_Cretes.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220618-Montagne-Cova-Cretes.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20210821_belier_montagne_7342591908.gpx",
+                                  "C:\\Users\\gille\\Downloads\\challenge-lac-montagne-s.gpx",
+                                  "C:\\Users\\gille\\Downloads\\montagne-leforchat-lescretes-20220724.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220827_Montagne_ColdeCou_9489574596.gpx",
 
-                "C:\\Users\\gille\\Downloads\\plaine1.gpx",
-                "C:\\Users\\gille\\Downloads\\plaine2.gpx",
-                "C:\\Users\\gille\\Downloads\\plaine3.gpx",
-                "C:\\Users\\gille\\Downloads\\plaine4.gpx",
-                "C:\\Users\\gille\\Downloads\\plaine5.gpx",
-                "C:\\Users\\gille\\Downloads\\plaine6.gpx",
-                "C:\\Users\\gille\\Downloads\\plaine7.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine1.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine2.gpx",y
 
-                "C:\\Users\\gille\\Downloads\\ultra.gpx",
-                "C:\\Users\\gille\\Downloads\\orcier.gpx",
-                "C:\\Users\\gille\\Downloads\\plainebalar.gpx",
-                "C:\\Users\\gille\\Downloads\\plainebalbrens.gpx",
-                "C:\\Users\\gille\\Downloads\\long1.gpx",
-                "C:\\Users\\gille\\Downloads\\allinges.gpx",
-                "C:\\Users\\gille\\Downloads\\cfer.gpx",
-                "C:\\Users\\gille\\Downloads\\20220611_Mont_Cretes.gpx",
-                "C:\\Users\\gille\\Downloads\\20220528_Plaine.gpx",
-                "C:\\Users\\gille\\Downloads\\20220423_MontForchat.gpx",
-                "C:\\Users\\gille\\Downloads\\20220409_Plaine_Allinges.gpx",
-                "C:\\Users\\gille\\Downloads\\20220528_Plaine.gpx",      // Ballaison
-                "C:\\Users\\gille\\Downloads\\20220626_sortiedraillant_hilly_bonnesmontees_9090691733.gpx",
-                "C:\\Users\\gille\\Downloads\\lestempliers2022_activity_9845878137.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine3.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine4.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine5.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine6.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plaine7.gpx",
 
-                "C:\\Users\\gille\\Downloads\\activity_20231.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20232.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20233.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20234.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20235.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20236.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20237.gpx",
-                "C:\\Users\\gille\\Downloads\\activity_20238.gpx"
+                                  "C:\\Users\\gille\\Downloads\\ultra.gpx",
+                                  "C:\\Users\\gille\\Downloads\\orcier.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plainebalar.gpx",
+                                  "C:\\Users\\gille\\Downloads\\plainebalbrens.gpx",
+                                  "C:\\Users\\gille\\Downloads\\long1.gpx",
+                                  "C:\\Users\\gille\\Downloads\\allinges.gpx",
+                                  "C:\\Users\\gille\\Downloads\\cfer.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220611_Mont_Cretes.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220528_Plaine.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220423_MontForchat.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220409_Plaine_Allinges.gpx",
+                                  "C:\\Users\\gille\\Downloads\\20220528_Plaine.gpx",      // Ballaison
+                                  "C:\\Users\\gille\\Downloads\\20220626_sortiedraillant_hilly_bonnesmontees_9090691733.gpx",
+                                  "C:\\Users\\gille\\Downloads\\lestempliers2022_activity_9845878137.gpx",
 
-                "C:\\Users\\gille\\Downloads\\moises1.gpx",
-                "C:\\Users\\gille\\Downloads\\moises2.gpx",
-                "C:\\Users\\gille\\Downloads\\moises3.gpx"
-                "C:\\Users\\gille\\Downloads\\activity_20251.gpx", */
+                                  "C:\\Users\\gille\\Downloads\\activity_20231.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20232.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20233.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20234.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20235.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20236.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20237.gpx",
+                                  "C:\\Users\\gille\\Downloads\\activity_20238.gpx"
+
+                                  "C:\\Users\\gille\\Downloads\\moises1.gpx",
+                                  "C:\\Users\\gille\\Downloads\\moises2.gpx",
+                                  "C:\\Users\\gille\\Downloads\\moises3.gpx"
+                                  "C:\\Users\\gille\\Downloads\\activity_20251.gpx", */
                 //"C:\\Users\\gille\\Downloads\\activity_20252.gpx"
-// Error                "C:\\Users\\gille\\Downloads\\activity_20253.gpx"
-// Error                "C:\\Users\\gille\\Downloads\\activity_20254.gpx"
-// Error                "C:\\Users\\gille\\Downloads\\activity_20255.gpx"
-//                "C:\\Users\\gille\\Downloads\\activity_20256.gpx"
-// Error                "C:\\Users\\gille\\Downloads\\activity_20257.gpx"
+
         };
         Collection<SessionFileImpl> files = generateFiles(gpxs);
-        UserImpl user = (UserImpl) userService.getUser(1);
+        UserImpl user = (UserImpl) userService.getUser(7);
         Models models = forecastManager.addReferenceData(files.toArray(new SessionFileImpl[files.size()]), user);
         System.out.println(models);
     }
