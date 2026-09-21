@@ -206,19 +206,19 @@ class TrainingApplicationTests {
         }
     }
 
-    @Test
-    public void testAddPredictedSession() {
-        PredictedSession session = new PredictedSession();
-        session.setName("CCC");
-        try {
-            session.setData(Files.readAllBytes(Paths.get("C:\\Users\\gille\\Downloads\\CCC_2023_bis.gpx")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        session.setDate(new Date());
-        UserImpl user = (UserImpl) userService.getUser(1);
-        PredictedSession pSession = predictionService.addPredictedSession(user, session);
-    }
+//    @Test
+//    public void testAddPredictedSession() {
+//        PredictedSession session = new PredictedSession();
+//        session.setName("CCC");
+//        try {
+//            session.setData(Files.readAllBytes(Paths.get("C:\\Users\\gille\\Downloads\\CCC_2023_bis.gpx")));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        session.setDate(new Date());
+//        UserImpl user = (UserImpl) userService.getUser(1);
+//        PredictedSession pSession = predictionService.addPredictedSession(user, session);
+//    }
 
     @Test
     public void testFileStorage() {

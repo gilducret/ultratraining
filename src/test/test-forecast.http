@@ -1,10 +1,22 @@
-### Test analyseGpx endpoint
-POST http://localhost:8081/api/forecast/analyse
-Content-Type: multipart/form-data; boundary=boundary
+POST http://localhost:8081/api/follow/5/position
+Content-Type: application/json
 
---boundary
-Content-Disposition: form-data; name="file"; filename="race.gpx"
-Content-Type: application/gpx+xml
+{
+  "latitude": 45.97344,
+  "longitude": 6.89778,
+  "altitude": 1939.0,
+  "distanceFromStartM": 0,
+  "elapsedSeconds": 3600
+}
 
-< C:\Users\gille\Downloads\WILD_70_K_officiel_06edfafe0d.gpx
---boundary--
+
+###
+
+### Check the position was saved
+GET http://localhost:8081/api/follow/5/position
+
+###
+
+### Check the session info (route + elevation)
+GET http://localhost:8081/api/follow/5/session
+
