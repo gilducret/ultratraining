@@ -301,7 +301,7 @@ class TrainingApplicationTests {
 
         };
         Collection<SessionFileImpl> files = generateFiles(gpxs);
-        UserImpl user = (UserImpl) userService.getUser(7);
+        UserImpl user = (UserImpl) userService.getUser(1);
         Models models = forecastManager.addReferenceData(files.toArray(new SessionFileImpl[files.size()]), user);
         System.out.println(models);
     }

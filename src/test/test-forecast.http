@@ -1,0 +1,10 @@
+### Test analyseGpx endpoint
+POST http://localhost:8081/api/forecast/analyse
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="race.gpx"
+Content-Type: application/gpx+xml
+
+< C:\Users\gille\Downloads\WILD_70_K_officiel_06edfafe0d.gpx
+--boundary--
