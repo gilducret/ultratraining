@@ -65,15 +65,16 @@ public class ForecastControler {
     }
 
     @PostMapping(path = "/reference")
-    public ResponseEntity<String> addReference(
+    public ResponseEntity<Models> addReference(
             @RequestParam("files") MultipartFile[] files,
             @RequestParam("userId") int userId) throws IOException {
 
         UserImpl user = (UserImpl) userService.getUser(userId);
         if (user == null) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        // Convert MultipartFile[] to SessionFileImpl[]
         SessionFileImpl[] sessionFiles = new SessionFileImpl[files.length];
         for (int i = 0; i < files.length; i++) {
             MultipartFile file = files[i];
@@ -85,19 +86,14 @@ public class ForecastControler {
             sessionFiles[i] = sessionFile;
         }
 
+        // Add reference data and rebuild pace model
         Models models = forecastManager.addReferenceData(sessionFiles, user);
 
         if (models == null) {
-            return new ResponseEntity<>(
-                    "Files saved but model could not be built yet. Upload more reference runs.",
-                    HttpStatus.OK);
+            return new ResponseEntity<>(new Models(), HttpStatus.OK);
         }
 
-        StringBuilder result = new StringBuilder("Model updated. ");
-        if (models.getModel2() != null) result.append("Model2 ✓ ");
-        if (models.getModel3() != null) result.append("Model3 ✓ ");
-        if (models.getModel4() != null) result.append("Model4 ✓ ");
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(models, HttpStatus.OK);
     }
 
     @PostMapping(path = "/predict")
@@ -260,7 +256,7 @@ public class ForecastControler {
 
         // Build mobile session JSON
         MobileSession mobileSession = buildMobileSession(request, predictions);
-
+        mobileSession.setSessionId(session.getId());
         // Save to session
         session.setName(request.getRaceName());
         session.setSessionData(

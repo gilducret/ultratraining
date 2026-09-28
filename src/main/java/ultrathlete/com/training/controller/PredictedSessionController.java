@@ -106,4 +106,29 @@ public class PredictedSessionController {
         predictedSessionDAO.deleteById(sessionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * GET /api/predictedsession/{sessionId}/download
+     * Returns the full MobileSession JSON for mobile download
+     */
+    @GetMapping("/{sessionId}/download")
+    public ResponseEntity<MobileSession> downloadSession(
+            @PathVariable int sessionId) {
+
+        PredictedSession session = predictedSessionDAO
+                .findById(sessionId).orElse(null);
+
+        if (session == null || session.getSessionData() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            MobileSession mobile = objectMapper.readValue(
+                    session.getSessionData(), MobileSession.class);
+            mobile.setSessionId(sessionId); // ensure it's set
+            return new ResponseEntity<>(mobile, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
